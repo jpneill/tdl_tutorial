@@ -18,7 +18,7 @@ def render_bar(panel, x, y, total_width, name, value, maximum, bar_colour, back_
 
     panel.draw_str(x_centered, y, text, fg=string_colour, bg=None)
 
-def render_all(con, panel, entities, player, game_map, fov_recompute, root_console, screen_width, screen_height, bar_width, panel_height, panel_y, colours):
+def render_all(con, panel, entities, player, game_map, fov_recompute, root_console, message_log, screen_width, screen_height, bar_width, panel_height, panel_y, colours):
     if fov_recompute:
         for x, y in game_map:
             wall = not game_map.transparent[x, y]
@@ -46,6 +46,11 @@ def render_all(con, panel, entities, player, game_map, fov_recompute, root_conso
     root_console.blit(con, 0, 0, screen_width, screen_height, 0, 0)
 
     panel.clear(fg=colours.get('white'), bg=colours.get('black'))
+
+    y = 1
+    for message in message_log.messages:
+        panel.draw_str(message_log.x, y, message.text, bg=None, fg=message.colour)
+        y+=1
 
     render_bar(panel, 1, 1, bar_width, 'HP', player.fighter.hp, player.fighter.max_hp, colours.get('light_red'), colours.get('darker_red'), colours.get('white'))
 
