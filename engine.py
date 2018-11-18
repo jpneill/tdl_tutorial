@@ -1,6 +1,7 @@
 import tdl
 
 from components.fighter import Fighter
+from death_functions import kill_monster, kill_player
 from entity import Entity, get_blocking_entities_at_location
 from game_states import GameStates
 from input_handlers import handle_keys
@@ -29,7 +30,8 @@ def main():
         'light_wall': (130, 110, 50),
         'light_ground': (200, 180, 50),
         'desaturated_green': (63, 127, 63),
-        'darker_green': (0,127,0)
+        'darker_green': (0,127,0),
+        'dark_red':(191,0,0)
     }
 
     fighter_component = Fighter(hp=30, defense=2, power=5)
@@ -108,7 +110,12 @@ def main():
                 print(message)
 
             if dead_entity:
-                pass
+                if dead_entity == player:
+                    message, game_state = kill_player(dead_entity, colours)
+                else:
+                    message = kill_monster(dead_entity, colours)
+
+                print(message)
 
         if game_state == GameStates.ENEMY_TURN:
             for entity in entities:
@@ -122,7 +129,18 @@ def main():
                             print(message)
 
                         if dead_entity:
-                            pass
+                            if dead_entity == player:
+                                message, game_state = kill_player(dead_entity, colours)
+                            else:
+                                message = kill_monster(dead_entity, colours)
+
+                            print(message)
+
+                            if game_state == GameStates.PLAYER_DEAD:
+                                break
+                    if game_state == GameStates.PLAYER_DEAD:
+                        break
+
             else:
                 game_state = GameStates.PLAYERS_TURN
 
