@@ -1,4 +1,5 @@
 from game_states import GameStates
+from render_functions import RenderOrder
 
 def kill_player(player, colours):
     player.char = '%'
@@ -14,6 +15,7 @@ def kill_monster(monster, colours):
     monster.blocks = False
     monster.fighter = None
     monster.ai = None
+    monster.render_order = RenderOrder.CORPSE
     monster.name = 'remains of ' + monster.name
 
     return dead_message

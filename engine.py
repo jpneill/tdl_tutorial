@@ -6,7 +6,7 @@ from entity import Entity, get_blocking_entities_at_location
 from game_states import GameStates
 from input_handlers import handle_keys
 from map_utils import make_map, GameMap
-from render_functions import clear_all, render_all
+from render_functions import clear_all, render_all, RenderOrder
 
 
 def main():
@@ -35,7 +35,7 @@ def main():
     }
 
     fighter_component = Fighter(hp=30, defense=2, power=5)
-    player = Entity(0, 0, '@', (255, 255, 255), 'Player', blocks=True, fighter=fighter_component)
+    player = Entity(0, 0, '@', (255, 255, 255), 'Player', blocks=True, render_order=RenderOrder.ACTOR, fighter=fighter_component)
     entities = [player]
 
     tdl.set_font('images/arial10x10.png', greyscale=True, altLayout=True)
@@ -54,7 +54,7 @@ def main():
         if fov_recompute:
             game_map.compute_fov(player.x, player.y, fov=fov_algorithm, radius=fov_radius, light_walls=fov_light_walls)
 
-        render_all(con, entities, game_map, fov_recompute, root_console, screen_width, screen_height, colours)
+        render_all(con, entities, player, game_map, fov_recompute, root_console, screen_width, screen_height, colours)
         tdl.flush()
 
         clear_all(con, entities)
