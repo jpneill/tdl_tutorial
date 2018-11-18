@@ -13,7 +13,11 @@ def main():
     screen_width = 80
     screen_height = 50
     map_width = 80
-    map_height = 45
+    map_height = 43
+
+    bar_width = 20
+    panel_height = 7
+    panel_y = screen_height - panel_height
 
     room_max_size = 10
     room_min_size = 6
@@ -31,7 +35,13 @@ def main():
         'light_ground': (200, 180, 50),
         'desaturated_green': (63, 127, 63),
         'darker_green': (0,127,0),
-        'dark_red':(191,0,0)
+        'dark_red':(191,0,0),
+        'white': (255, 255, 255),
+        'black': (0, 0, 0),
+        'red': (255, 0, 0),
+        'orange': (255, 127, 0),
+        'light_red': (255, 114, 114),
+        'darker_red': (127, 0, 0)
     }
 
     fighter_component = Fighter(hp=30, defense=2, power=5)
@@ -42,6 +52,7 @@ def main():
 
     root_console = tdl.init(screen_width, screen_height, title='Roguelike Tutorial Revised')
     con = tdl.Console(screen_width, screen_height)
+    panel = tdl.Console(screen_width, panel_height)
 
     game_map = GameMap(map_width, map_height)
     make_map(game_map, max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities, max_monsters_per_room, colours)
@@ -54,7 +65,7 @@ def main():
         if fov_recompute:
             game_map.compute_fov(player.x, player.y, fov=fov_algorithm, radius=fov_radius, light_walls=fov_light_walls)
 
-        render_all(con, entities, player, game_map, fov_recompute, root_console, screen_width, screen_height, colours)
+        render_all(con, panel, entities, player, game_map, fov_recompute, root_console, screen_width, screen_height, bar_width, panel_height, panel_y, colours)
         tdl.flush()
 
         clear_all(con, entities)

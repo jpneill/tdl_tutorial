@@ -5,7 +5,20 @@ class RenderOrder(Enum):
     ITEM = 2
     ACTOR = 3
 
-def render_all(con, entities, player, game_map, fov_recompute, root_console, screen_width, screen_height, colours):
+def render_bar(panel, x, y, total_width, name, value, maximum, bar_colour, back_colour, string_colour):
+    bar_width = int(float(value) / maximum * total_width)
+
+    panel.draw_rect(x, y, total_width, 1, None, bg=back_colour)
+
+    if bar_width > 0:
+        panel.draw_rect(x, y, bar_width, 1, None, bg=bar_colour)
+
+    text = name + ': ' + str(value) + '/' + str(maximum)
+    x_centered = x + int((total_width-len(text)) / 2)
+
+    panel.draw_str(x_centered, y, text, fg=string_colour, bg=None)
+
+def render_all(con, panel, entities, player, game_map, fov_recompute, root_console, screen_width, screen_height, bar_width, panel_height, panel_y, colours):
     if fov_recompute:
         for x, y in game_map:
             wall = not game_map.transparent[x, y]
@@ -30,10 +43,13 @@ def render_all(con, entities, player, game_map, fov_recompute, root_console, scr
     for entity in entities_in_render_order:
         draw_entity(con, entity, game_map.fov)
 
-    con.draw_str(1, screen_height - 2, 'HP: {0:02}/{1:02}'.format(player.fighter.hp, player.fighter.max_hp))
-
     root_console.blit(con, 0, 0, screen_width, screen_height, 0, 0)
 
+    panel.clear(fg=colours.get('white'), bg=colours.get('black'))
+
+    render_bar(panel, 1, 1, bar_width, 'HP', player.fighter.hp, player.fighter.max_hp, colours.get('light_red'), colours.get('darker_red'), colours.get('white'))
+
+    root_console.blit(panel, 0, panel_y, screen_width, panel_height, 0, 0)
 
 def clear_all(con, entities):
     for entity in entities:
