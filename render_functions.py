@@ -5,6 +5,15 @@ class RenderOrder(Enum):
     ITEM = 2
     ACTOR = 3
 
+def get_names_under_mouse(mouse_coordinates, entities, game_map):
+    x,y = mouse_coordinates
+
+    names = [entity.name for entity in entities
+             if entity.x == x and entity.y == y and game_map.fov[entity.x,entity.y]]
+    names = ', '.join(names)
+
+    return names.capitalize()
+
 def render_bar(panel, x, y, total_width, name, value, maximum, bar_colour, back_colour, string_colour):
     bar_width = int(float(value) / maximum * total_width)
 
@@ -18,7 +27,8 @@ def render_bar(panel, x, y, total_width, name, value, maximum, bar_colour, back_
 
     panel.draw_str(x_centered, y, text, fg=string_colour, bg=None)
 
-def render_all(con, panel, entities, player, game_map, fov_recompute, root_console, message_log, screen_width, screen_height, bar_width, panel_height, panel_y, colours):
+def render_all(con, panel, entities, player, game_map, fov_recompute, root_console, message_log, screen_width, 
+               screen_height, bar_width, panel_height, panel_y, mouse_coordinates, colours):
     if fov_recompute:
         for x, y in game_map:
             wall = not game_map.transparent[x, y]
@@ -53,6 +63,8 @@ def render_all(con, panel, entities, player, game_map, fov_recompute, root_conso
         y+=1
 
     render_bar(panel, 1, 1, bar_width, 'HP', player.fighter.hp, player.fighter.max_hp, colours.get('light_red'), colours.get('darker_red'), colours.get('white'))
+
+    panel.draw_str(1, 0, get_names_under_mouse(mouse_coordinates, entities, game_map))
 
     root_console.blit(panel, 0, panel_y, screen_width, panel_height, 0, 0)
 

@@ -66,13 +66,16 @@ def main():
 
     message_log = MessageLog(message_x, message_width, message_height)
 
+    mouse_coordinates = (0, 0)
+
     game_state = GameStates.PLAYERS_TURN
 
     while not tdl.event.is_window_closed():
         if fov_recompute:
             game_map.compute_fov(player.x, player.y, fov=fov_algorithm, radius=fov_radius, light_walls=fov_light_walls)
 
-        render_all(con, panel, entities, player, game_map, fov_recompute, root_console, message_log, screen_width, screen_height, bar_width, panel_height, panel_y, colours)
+        render_all(con, panel, entities, player, game_map, fov_recompute, root_console, message_log, screen_width, 
+                screen_height, bar_width, panel_height, panel_y, mouse_coordinates, colours)
         tdl.flush()
 
         clear_all(con, entities)
@@ -83,6 +86,8 @@ def main():
             if event.type == 'KEYDOWN':
                 user_input = event
                 break
+            elif event.type == 'MOUSEMOTION':
+                mouse_coordinates = event.cell
         else:
             user_input = None
 
