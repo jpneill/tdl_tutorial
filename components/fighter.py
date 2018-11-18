@@ -13,7 +13,7 @@ class Fighter:
         if self.hp <= 0:
             results.append({'dead': self.owner})
 
-        results
+        return results
 
     def attack(self, target):
         results = []
