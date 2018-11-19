@@ -3,6 +3,7 @@ from random import randint
 from entity import Entity
 from components.ai import BasicMonster
 from components.fighter import Fighter
+from components.item import Item
 from render_functions import RenderOrder
 
 class GameMap(Map):
@@ -73,7 +74,9 @@ def place_entities(room, entities, max_monsters_per_room, max_items_per_room, co
         y = randint(room.y1 + 1, room.y2 - 1)
 
         if not any([entity for entity in entities if entity.x == x and entity.y == y]):
-            item = Entity(x, y, '!', colours.get('violet'), 'Healing Potion', render_order=RenderOrder.ITEM)
+            item_component = Item()
+            item = Entity(x, y, '!', colours.get('violet'), 'Healing Potion', render_order=RenderOrder.ITEM,
+                          item=item_component)
 
             entities.append(item)
 

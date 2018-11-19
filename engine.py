@@ -1,6 +1,8 @@
 import tdl
 
 from components.fighter import Fighter
+from components.inventory import Inventory
+from components.item import Item
 from death_functions import kill_monster, kill_player
 from entity import Entity, get_blocking_entities_at_location
 from game_messages import MessageLog
@@ -55,7 +57,9 @@ def main():
     }
 
     fighter_component = Fighter(hp=30, defense=2, power=5)
-    player = Entity(0, 0, '@', (255, 255, 255), 'Player', blocks=True, render_order=RenderOrder.ACTOR, fighter=fighter_component)
+    inventory_component = Inventory(26)
+    player = Entity(0, 0, '@', (255, 255, 255), 'Player', blocks=True, render_order=RenderOrder.ACTOR, 
+                    fighter=fighter_component, inventory=inventory_component)
     entities = [player]
 
     tdl.set_font('images/arial10x10.png', greyscale=True, altLayout=True)
