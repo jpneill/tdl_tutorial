@@ -107,6 +107,7 @@ def main():
         action = handle_keys(user_input)
 
         move = action.get('move')
+        pickup = action.get('pickup')
         exit = action.get('exit')
         fullscreen = action.get('fullscreen')
 
