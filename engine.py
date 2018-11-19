@@ -28,6 +28,7 @@ def main():
     room_min_size = 6
     max_rooms = 30
     max_monsters_per_room = 3
+    max_items_per_room = 2
 
     fov_algorithm = 'BASIC'
     fov_light_walls = True
@@ -64,7 +65,8 @@ def main():
     panel = tdl.Console(screen_width, panel_height)
 
     game_map = GameMap(map_width, map_height)
-    make_map(game_map, max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities, max_monsters_per_room, colours)
+    make_map(game_map, max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities, 
+             max_monsters_per_room, max_items_per_room, colours)
 
     fov_recompute = True
 

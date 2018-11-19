@@ -47,8 +47,9 @@ def create_v_tunnel(game_map, y1, y2, x):
         game_map.walkable[x, y] = True
         game_map.transparent[x, y] = True
 
-def place_entities(room, entities, max_monsters_per_room, colours):
+def place_entities(room, entities, max_monsters_per_room, max_items_per_room, colours):
     num_monsters = randint(0, max_monsters_per_room)
+    num_items = randint(0, max_items_per_room)
 
     for i in range(num_monsters):
         x = randint(room.x1 + 1, room.x2 - 1)
@@ -67,7 +68,17 @@ def place_entities(room, entities, max_monsters_per_room, colours):
 
             entities.append(monster)
 
-def make_map(game_map, max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities, max_monsters_per_room, colours):
+    for i in range(num_items):
+        x = randint(room.x1 + 1, room.x2 - 1)
+        y = randint(room.y1 + 1, room.y2 - 1)
+
+        if not any([entity for entity in entities if entity.x == x and entity.y == y]):
+            item = Entity(x, y, '!', colours.get('violet'), 'Healing Potion', render_order=RenderOrder.ITEM)
+
+            entities.append(item)
+
+def make_map(game_map, max_rooms, room_min_size, room_max_size, map_width, map_height, player, entities, 
+             max_monsters_per_room, max_items_per_room, colours):
     rooms = []
     num_rooms = 0
 
@@ -117,7 +128,7 @@ def make_map(game_map, max_rooms, room_min_size, room_max_size, map_width, map_h
                     create_h_tunnel(game_map, prev_x, new_x, new_y)
 
                     # finally, append the new room to the list
-            place_entities(new_room, entities, max_monsters_per_room, colours)
+            place_entities(new_room, entities, max_monsters_per_room, max_items_per_room, colours)
             rooms.append(new_room)
             num_rooms += 1
 
