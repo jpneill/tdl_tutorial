@@ -5,7 +5,7 @@ from components.inventory import Inventory
 from components.item import Item
 from death_functions import kill_monster, kill_player
 from entity import Entity, get_blocking_entities_at_location
-from game_messages import MessageLog
+from game_messages import Message, MessageLog
 from game_states import GameStates
 from input_handlers import handle_keys
 from map_utils import make_map, GameMap
@@ -129,6 +129,17 @@ def main():
                     fov_recompute = True
 
                 game_state = GameStates.ENEMY_TURN
+
+        elif pickup and game_state == GameStates.PLAYERS_TURN:
+            for entity in entities:
+                if entity.item and entity.x == player.x and entity.y == player.y:
+                    pickup_results = player.inventory.add_item(entity, colours)
+                    player_turn_results.extend(pickup_results)
+
+                    break
+                
+            else:
+                message_log.add_message(Message('There is nothing here to pick up.',colours.get('yellow')))
 
         if exit:
             return True
