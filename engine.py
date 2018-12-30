@@ -54,7 +54,9 @@ def main():
         'violet': (127, 0, 255),
         'yellow': (255, 255, 0),
         'blue': (0, 0, 255),
-        'green': (0, 255, 0)
+        'green': (0, 255, 0),
+        'light_cyan': (114, 255, 255),
+        'light_pink': (255, 114, 184)
     }
 
     fighter_component = Fighter(hp=30, defense=2, power=5)
