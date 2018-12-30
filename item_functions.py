@@ -62,7 +62,7 @@ def cast_fireball(*args, **kwargs):
         return results
 
     results.append({'consumed':True,
-                    'message':Message('The fireball explodes, burning everything within {0} tiles!',format(radius),colors.get('orange'))})
+                    'message':Message('The fireball explodes, burning everything within {0} tiles!'.format(radius),colors.get('orange'))})
 
     for entity in entities:
         if entity.distance(target_x, target_y) <= radius and entity.fighter:

@@ -2,13 +2,15 @@ from tdl.map import Map
 
 from random import randint
 
+from game_messages import Message
+
 from components.ai import BasicMonster
 from components.fighter import Fighter
 from components.item import Item
 
 from entity import Entity
 
-from item_functions import heal,cast_lightning
+from item_functions import heal,cast_lightning,cast_fireball
 
 from render_functions import RenderOrder
 
@@ -94,6 +96,11 @@ def place_entities(room, entities, max_monsters_per_room, max_items_per_room, co
                 item_component = Item(use_function=heal, amount=4)
                 item = Entity(x, y, '!', colors.get('violet'), 'Healing Potion', render_order=RenderOrder.ITEM,
                               item=item_component)
+            elif item_chance < 85:
+                item_component = Item(use_function=cast_fireball, targeting=True,
+                                      targeting_message=Message('Left click a target tile to cast. Right click to cancel targeting.',colors.get('light_cyan')),
+                                      damage=12, radius=3)
+                item = Entity(x, y, '#', colors.get('red'), 'Fireball Scroll', render_order=RenderOrder.ITEM, item=item_component)
             else:
                 item_component = Item(use_function=cast_lightning, damage=20, maximum_range=5)
                 item = Entity(x, y, '#', colors.get('yellow'), 'Lightning Scroll', render_order=RenderOrder.ITEM,

@@ -53,6 +53,9 @@ class Entity:
         dy = other.y - self.y
         return math.sqrt(dx ** 2 + dy ** 2)
 
+    def distance(self, x, y):
+        return math.sqrt((x-self.x)**2+(y-self.y)**2)
+
 
 def get_blocking_entities_at_location(entities, destination_x, destination_y):
     for entity in entities:
