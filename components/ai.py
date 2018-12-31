@@ -1,4 +1,4 @@
-from random import random
+from random import randint
 from game_messages import Message
 
 class BasicMonster:
